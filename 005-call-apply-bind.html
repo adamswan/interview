@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let obj = { name: "高圆圆" };
+
+      function getName(a, b) {
+        console.log(this, a, b);
+      }
+
+      // call的第一个参数是this新指向，后面参数是传入原函数的参数
+      //  getName.call(obj, 1, 2);
+
+      // apply的第一个参数是this新指向，第2个参数是数组，用于接收参数
+      //   getName.apply(obj, [3, 4]);
+
+      // bind 修改了this指向，但不调用原函数，而是返回一个新函数
+      //   let res = getName.bind(obj);
+      //   res(5, 6);
+
+      // 手写 call
+      //   Function.prototype.myCall = function (obj, ...args) {
+      //     let fn = this;
+      //     obj["thekey"] = fn;
+      //     obj["thekey"](...args);
+      //     delete obj["thekey"];
+      //   };
+
+      //   getName.myCall(obj, 1, 2);
+
+      // 手写 apply
+      //   Function.prototype.myApply = function (obj, arr) {
+      //     let fn = this;
+      //     obj["thekey"] = fn;
+      //     obj["thekey"](...arr);
+      //     delete obj["thekey"];
+      //   };
+      //   getName.myApply(obj, [3, 4]);
+
+      // 手写 bind
+      function getName2(a, b, c, d) {
+        console.log(this, a, b, c, d);
+      }
+      Function.prototype.myBind = function (obj, ...args1) {
+        let fn = this;
+
+        return function (...args2) {
+          fn.call(obj, ...args1, ...args2);
+        };
+      };
+
+      let res = getName2.myBind(obj, 1, 2);
+      res(3, 4);
+    </script>
+  </body>
+</html>

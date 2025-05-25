@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function Man(name) {
+        this.name = name;
+      }
+
+      let m1 = new Man("高圆圆");
+      console.log("m1", m1);
+
+      function myNew(Fn, ...args) {
+        let newObj = Object.create(Fn.prototype);
+
+        let res = Fn.call(newObj, ...args);
+
+        if (
+          Object.prototype.toString.call(res) === "[object Object]" ||
+          Object.prototype.toString.call(res) === "[object Function]"
+        ) {
+          return res;
+        }
+
+        return newObj;
+      }
+
+      let res = myNew(Man, "高圆圆2");
+      console.log("res", res);
+    </script>
+  </body>
+</html>

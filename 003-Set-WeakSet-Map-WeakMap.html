@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //   let arr = [1, 2, 3, 1, 2, 3];
+
+      //   // 1、创建 Set
+      //   let set = new Set(arr);
+      //   console.log(".size属性", set.size);
+
+      //   // 2、展开 Set，再包装成数组
+      //   let res = [...set];
+
+      //   console.log(res);
+      //   // [1, 2, 3]
+
+      //   // 3、遍历 Set
+      //   for (let K of set) {
+      //     console.log(K);
+      //   }
+      //   // 1
+      //   // 2
+      //   // 3
+
+      //   let ws = new WeakSet();
+      //   ws.add({ name: "高圆圆" });
+      //   ws.add({ age: 18 });
+      //   console.log(ws);
+
+      let map = new Map();
+      map.set("name", "高圆圆");
+      map.set("age", 18);
+      map.set("like", "run");
+      console.log(map);
+
+      let res = map.keys().next().value;
+      console.log(res);
+    </script>
+  </body>
+</html>

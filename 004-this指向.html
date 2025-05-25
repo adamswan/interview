@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="box">123</div>
+
+    <script>
+      // 1. 全局作用域下，普通function和立即执行函数中的this指向window
+      //   function Person() {
+      //     console.log("高圆圆1", this); // window
+      //   }
+      //   Person();
+
+      //   (function () {
+      //     console.log("高圆圆2", this); // window
+      //   })();
+
+      //  2. 严格模式下，普通function中的this指向undefined
+      //   "use strict";
+      //   function Person() {
+      //     console.log("高圆圆1", this); // undefined
+      //   }
+      //   Person();
+
+      //   (function () {
+      //     console.log("高圆圆2", this); // undefined
+      //   })();
+
+      // 3. 构造函数、class 类中的this指向创建出来的实例
+      //   function Person(name, age) {
+      //     this.name = name;
+      //     this.age = age;
+      //     console.log("构造函数", this);
+      //   }
+      //   new Person("刘亦菲1", 18);
+
+      //   class Wife {
+      //     constructor(name, age) {
+      //       this.name = name;
+      //       this.age = age;
+      //     }
+
+      //     say() {
+      //       console.log("类", this);
+      //     }
+      //   }
+      //   new Wife("刘亦菲2", 28).say();
+
+      // 4.箭头函数中的this指向创建箭头函数的函数的this
+      //   const fn = () => {
+      //     console.log("箭头函数", this);
+      //   };
+      //   fn();
+
+      // 5. DOM 事件回调中的this，指向DOM元素
+      document.querySelector(".box").onclick = function () {
+        console.log("DOM元素", this); // <div class="box">123</div>
+        // DOM元素-对象形式展示:
+        console.dir(this);
+      };
+
+      // 6. 对象方法中的this，指向对象
+      //   let obj = {
+      //     name: "高圆圆",
+      //     age: 18,
+      //     getname() {
+      //       console.log("对象身上的方法", this);
+      //     },
+      //   };
+      //   obj.getname();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 1、手写 instanceof
+      let arr = [123];
+
+      console.log(arr instanceof Array);
+
+      function myInstanceof(instance, Fun) {
+        let prototype = Object.getPrototypeOf(instance);
+
+        while (prototype !== null) {
+          if (prototype === Fun.prototype) {
+            return true;
+          }
+          prototype = Object.getPrototypeOf(prototype);
+        }
+
+        return false;
+      }
+
+      console.log(myInstanceof("hi", Array));
+
+      // 2、 使用 Object.prototype.toString.call
+      console.log(Object.prototype.toString.call(123));
+      // '[object Number]'
+
+      console.log(Object.prototype.toString.call(true));
+      // '[object Boolean]'
+
+      console.log(Object.prototype.toString.call(["高圆圆"]));
+      // '[object Array]'
+    </script>
+  </body>
+</html>
