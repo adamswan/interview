@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let arr = ["高圆圆", "刘亦菲", "佟丽娅"];
+
+      let obj = {
+        name: "高圆圆",
+        age: 18,
+      };
+
+      // for...in 遍历数组
+      //   for (let K in arr) {
+      //     console.log("K", K);
+      //     console.log("arr[K]", arr[K]);
+      //   }
+
+      // for...in 遍历对象
+      //   for (let K in obj) {
+      //     console.log("K", K);
+      //     console.log("obj[K]", obj[K]);
+      //   }
+
+      // for...of 遍历数组
+      //   for (let K of arr) {
+      //     console.log("K", K);
+      //   }
+
+      //   let map = new Map();
+      //   map.set("name2", "高圆圆");
+      //   map.set("age2", 18);
+
+      // for...of 遍历 Map
+      //   for (let K of map) {
+      //     // K 是数组
+      //     console.log("K", K);
+      //     console.log("K[0]", K[0]);
+      //     console.log("K[1]", K[1]);
+      //   }
+
+      const promises = [
+        new Promise((resolve) => setTimeout(() => resolve(1), 1000)),
+        new Promise((resolve) => setTimeout(() => resolve(2), 500)),
+        new Promise((resolve) => setTimeout(() => resolve(3), 1500)),
+      ];
+
+      async function getname() {
+        for await (const K of promises) {
+          console.log(K); // 按顺序输出 1 → 2 → 3（等待时间总和）
+        }
+      }
+      getname();
+    </script>
+  </body>
+</html>

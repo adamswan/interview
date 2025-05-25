@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="text" />
+
+    <script>
+      let dom = document.querySelector("input");
+
+      // 不用防抖
+      //   dom.addEventListener("input", (e) => {
+      //     console.log(e.target.value);
+      //   });
+
+      // 用防抖
+      function debounce(fn, time) {
+        let timeId;
+
+        // return 的这个匿名函数，才是 addEventListener 中实际的事件回调，
+        // 所以它的参数才是事件对象 event
+        return function (event) {
+          clearTimeout(timeId); // 先清除上次的定时器，才能实现持续触发不执行
+
+          timeId = setTimeout(() => {
+            fn(event);
+          }, time);
+        };
+      }
+
+      dom.addEventListener(
+        "input",
+        debounce((event) => {
+          console.log(event.target.value);
+        }, 1000)
+      );
+    </script>
+  </body>
+</html>

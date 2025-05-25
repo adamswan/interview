@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function getName() {
+        let name = "高圆圆";
+
+        // 内层函数就是闭包
+        return function () {
+          console.log("打印名字：", name);
+        };
+      }
+
+      let fn = getName();
+
+      fn();
+      fn();
+
+      // 切断引用关系
+      fn = null;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .father {
+        width: 400px;
+        height: 400px;
+        background-color: pink;
+      }
+      .son {
+        width: 200px;
+        height: 200px;
+        background-color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="father">
+      <div class="son"></div>
+    </div>
+
+    <ul>
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+      <li>4</li>
+      <li>5</li>
+      <li>6</li>
+      <li>7</li>
+      <li>8</li>
+    </ul>
+
+    <script>
+      let father = document.querySelector(".father");
+      father.addEventListener(
+        "click",
+        () => {
+          console.log("父盒子被点击");
+        }
+        // true
+      );
+
+      let son = document.querySelector(".son");
+      son.addEventListener("click", (e) => {
+        // 阻止事件在冒泡接阶段的传播
+        e.stopPropagation();
+        console.log("子盒子被点击");
+      });
+
+      // 事件冒泡的应用：事件委托
+      let ul = document.querySelector("ul");
+      ul.addEventListener("click", () => {
+        console.log("事件委托");
+      });
+    </script>
+  </body>
+</html>

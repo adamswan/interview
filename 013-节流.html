@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button>点</button>
+    <script>
+      let dom = document.querySelector("button");
+
+      function throttle(fn, time) {
+        let timeId = null;
+
+        return function () {
+          // 如果不为null，说明当前有定时器在执行，那么就return掉
+          if (timeId !== null) {
+            return;
+          }
+
+          timeId = setTimeout(() => {
+            fn();
+            // 本次定时器执行完成后，要重置timeId为null
+            timeId = null;
+          }, time);
+        };
+      }
+
+      dom.addEventListener(
+        "click",
+        throttle(() => {
+          console.log("点击");
+        }, 1000)
+      );
+    </script>
+  </body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let obj = {
+        a: 1,
+        b: [2, 3],
+        c: {
+          d: "高圆圆",
+          e: true,
+        },
+      };
+
+      let wm = new WeakMap();
+
+      function cloneDeep(source) {
+        if (source === null) {
+          return null;
+        }
+        if (typeof source !== "object") {
+          return source;
+        }
+
+        if (wm.has(source)) {
+          return wm.get(source);
+        }
+
+        if (Array.isArray(source)) {
+          let newArr = [];
+
+          wm.set(source, newArr);
+
+          for (let i = 0; i < source.length; i++) {
+            let item = source[i];
+            newArr.push(cloneDeep(item));
+          }
+
+          return newArr;
+        } else {
+          let newObj = {};
+
+          wm.set(source, newObj);
+
+          for (let K in source) {
+            if (source.hasOwnProperty(K)) {
+              newObj[K] = cloneDeep(source[K]);
+            }
+          }
+
+          return newObj;
+        }
+      }
+      console.log("obj", obj);
+
+      let res = cloneDeep(obj);
+
+      res.c.d = "刘亦菲";
+      console.log("res", res);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let a = { name: "高圆圆" };
+      let b = { age: 18 };
+
+      let res = Object.assign(a, b);
+
+      console.log("res", res); // {name: '高圆圆', age: 18
+      console.log("a", a); // {name: '高圆圆', age: 18
+
+      let arr = [1, 2, 3];
+      console.log(arr.slice()); // [1, 2, 3];
+
+      let arr2 = [4, 5, 6];
+      console.log(arr.concat(arr2)); // [1, 2, 3, 4, 5, 6]
+
+      // -----------------------------------------------
+      //   structuredClone() 实现深拷贝
+      let obj = {
+        a: 1,
+        b: [2, 3],
+        c: {
+          d: "高圆圆",
+          e: true,
+        },
+      };
+
+      console.log("obj", obj);
+
+      let copy = structuredClone(obj);
+
+      copy.c.d = "刘亦菲";
+      console.log("copy", copy);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 方式1
+      //   class Father {
+      //     constructor(name) {
+      //       this.name = name;
+      //     }
+      //     getAge() {
+      //       console.log("18");
+      //     }
+      //   }
+
+      //   class Son extends Father {
+      //     constructor(name) {
+      //       super(name);
+      //     }
+      //   }
+
+      //   let s1 = new Son("高圆圆");
+      //   console.log(s1);
+      //   s1.getAge();
+
+      // 方式2
+      function Father(name) {
+        this.name = name;
+      }
+      Father.prototype.getAge = function () {
+        console.log("28");
+      };
+
+      function Son(name) {
+        Father.call(this, name);
+      }
+
+      let newObj = Object.create(Father.prototype, {
+        constructor: {
+          value: Son,
+        },
+      });
+
+      Son.prototype = newObj;
+
+      let res2 = new Son("刘亦菲");
+      console.log(res2);
+      res2.getAge();
+    </script>
+  </body>
+</html>
