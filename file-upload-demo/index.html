@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>大文件切片上传和断点续传示例</title>
+  </head>
+
+  <body>
+    <input type="file" id="fileInput" />
+    <button onclick="uploadFile()">上传</button>
+    <div id="progress"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/spark-md5@3.0.2/spark-md5.min.js"></script>
+    <script>
+      async function uploadFile() {
+        const fileInput = document.getElementById("fileInput");
+
+        const file = fileInput.files[0];
+        if (!file) {
+          alert("请选择文件");
+          return;
+        }
+
+        const chunkSize = 5 * 1024 * 1024; // 5MB
+
+        const totalChunks = Math.ceil(file.size / chunkSize);
+
+        const fileHash = await calculateFileHash(file, chunkSize);
+
+        // 检查已上传的切片
+        const { uploadedChunks } = await checkUploadedChunks(fileHash);
+
+        let uploadedSize = 0;
+
+        for (let i = 0; i < totalChunks; i++) {
+          if (uploadedChunks.includes(i)) {
+            uploadedSize += Math.min(chunkSize, file.size - i * chunkSize);
+            continue;
+          }
+
+          const chunk = file.slice(i * chunkSize, (i + 1) * chunkSize);
+          const formData = new FormData();
+          formData.append("file", chunk);
+          formData.append("chunkIndex", i);
+          formData.append("totalChunks", totalChunks);
+          formData.append("fileHash", fileHash);
+
+          await uploadChunk(formData, i, totalChunks, file.size, uploadedSize);
+          uploadedSize += chunk.size;
+        }
+
+        // 合并切片
+        await mergeChunks(fileHash, file.name, totalChunks);
+        alert("文件上传成功");
+      }
+
+      async function calculateFileHash(file, chunkSize) {
+        return new Promise((resolve) => {
+          const spark = new SparkMD5.ArrayBuffer();
+
+          const fileReader = new FileReader();
+
+          let offset = 0;
+
+          const loadNext = () => {
+            const end = Math.min(offset + chunkSize, file.size);
+            fileReader.readAsArrayBuffer(file.slice(offset, end));
+          };
+
+          fileReader.onload = (e) => {
+            spark.append(e.target.result);
+            offset += chunkSize;
+
+            if (offset < file.size) {
+              loadNext();
+            } else {
+              resolve(spark.end());
+            }
+          };
+
+          loadNext();
+        });
+      }
+
+      async function checkUploadedChunks(fileHash) {
+        const response = await fetch(`http://localhost:3000/check-chunks?fileHash=${fileHash}`);
+        return response.json();
+      }
+
+      async function uploadChunk(formData, chunkIndex, totalChunks, fileSize, uploadedSize) {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:3000/upload-chunk", true);
+
+        xhr.upload.addEventListener("progress", (e) => {
+          const currentProgress = uploadedSize + e.loaded;
+          const percentComplete = (currentProgress / fileSize) * 100;
+          document.getElementById("progress").innerHTML = `上传进度: ${percentComplete.toFixed(2)}%`;
+        });
+
+        return new Promise((resolve, reject) => {
+          xhr.onreadystatechange = () => {
+            if (xhr.readyState === 4) {
+              if (xhr.status === 200) {
+                resolve();
+              } else {
+                reject(new Error("切片上传失败"));
+              }
+            }
+          };
+          xhr.send(formData);
+        });
+      }
+
+      async function mergeChunks(fileHash, fileName, totalChunks) {
+        const formData = new FormData();
+        formData.append("fileHash", fileHash);
+        formData.append("fileName", fileName);
+        formData.append("totalChunks", totalChunks);
+
+        const response = await fetch("http://localhost:3000/merge-chunks", {
+          method: "POST",
+          body: formData,
+        });
+        return response.text();
+      }
+    </script>
+  </body>
+</html>
