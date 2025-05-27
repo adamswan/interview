@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button class="btn1">向worker线程发消息</button>
+
+    <script>
+      let w = new Worker("018-worker.js");
+
+      // 发消息
+      document.querySelector(".btn1").onclick = function () {
+        w.postMessage("hello");
+      };
+
+      // 收消息
+      w.onmessage = function (e) {
+        console.log("收到worker线程的消息", e.data);
+      };
+    </script>
+  </body>
+</html>

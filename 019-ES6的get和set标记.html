@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      class Gaoyuanyuan {
+        _age = 18;
+
+        constructor(name) {
+          this.name = name;
+        }
+
+        get age() {
+          console.log("get标记的 age 属性被读取了");
+          return this._age;
+        }
+
+        set age(newAge) {
+          console.log("set标记的 age 属性修改了");
+        }
+      }
+
+      let yuan = new Gaoyuanyuan("高圆圆");
+
+      console.log(yuan.age); // 18
+
+      yuan.age = 19; // set标记的 age 属性修改了
+    </script>
+  </body>
+</html>
